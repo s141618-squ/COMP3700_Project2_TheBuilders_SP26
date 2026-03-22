@@ -1,0 +1,75 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Auto Trade - Contact Us</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo.png" alt="Auto Trade Logo" height="50" /> 
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About Us</a></li>
+                <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
+                <li class="nav-item"><a class="nav-link" href="sell.html">Sell Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="finance.html">Finance</a></li>
+                <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="text-center mb-4">Contact Auto Trade</h2>
+            
+            <form action="processing.html" method="get" class="border p-4 bg-white rounded shadow-sm">
+                
+                <div class="mb-3">
+                    <label for="userName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="userName" name="userName" required="required" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="userEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="userEmail" name="userEmail" required="required" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="subject" class="form-label">Inquiry Subject</label>
+                    <select class="form-select" id="subject" name="subject">
+                        <option value="buy">Buying a Car</option>
+                        <option value="sell">Selling my Car</option>
+                        <option value="service">Maintenance</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="4"></textarea>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary btn-lg">Send and Return Home</button>
+                    <button type="reset" class="btn btn-light">Clear Form</button>
+                </div>
+                
+            </form>
+        </div>
+    </div>
+</div>
+
+<footer class="footer text-center mt-5 py-4 bg-dark text-white">
+    <p>&copy; 2026 Auto Trade Dealership. All rights reserved.</p>
+</footer>
+
+</body>
+</html>
