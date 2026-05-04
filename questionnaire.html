@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Customer Questionnaire - Auto Trade Dealership</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <script>
+        
+        /* ── FUNCTION 1: validateFeedbackForm() ─────────────────────── */
+        function validateFeedbackForm() {
+            let fullName     = document.forms["feedbackForm"]["fullName"];
+            let email        = document.forms["feedbackForm"]["email"];
+            let phone        = document.forms["feedbackForm"]["phone"];
+            let age          = document.forms["feedbackForm"]["age"];
+            let serviceType  = document.forms["feedbackForm"]["serviceType"];
+            let rating       = document.forms["feedbackForm"]["rating"];
+            let satisfaction = document.forms["feedbackForm"]["satisfaction"];
+
+            // (a) Required + (b) Regex — Full Name (3-50 letters, spaces, hyphens)
+            if (fullName.value.search(/^[a-zA-Z\s\-']{3,50}$/) == -1) {
+                alert("Incorrect full name. Name must be 3-50 characters and contain only letters, spaces, hyphens, or apostrophes.");
+                fullName.focus();
+                return false;
+            }
+
+            // (a) Required — Email must not be empty
+            if (email.value == "") {
+                alert("Please enter a valid e-mail address.");
+                email.focus();
+                return false;
+            }
+
+            // (b) Regex — Email must contain @ symbol
+            if (email.value.indexOf("@", 0) < 0) {
+                alert("Please enter a valid e-mail address. It must contain '@'.");
+                email.focus();
+                return false;
+            }
+
+            // (b) Regex — Email must contain a dot
+            if (email.value.indexOf(".", 0) < 0) {
+                alert("Please enter a valid e-mail address. It must contain a '.' after '@'.");
+                email.focus();
+                return false;
+            }
+
+            // (b) Regex — Omani phone: exactly 8 digits starting with 7 or 9
+            if (phone.value.search(/^[79]\d{7}$/) == -1) {
+                alert("Please enter a valid Omani phone number (8 digits, starting with 7 or 9, e.g. 91234567).");
+                phone.focus();
+                return false;
+            }
+
+            // (c) Range constraint — Age must be between 18 and 100
+            let ageVal = parseInt(age.value);
+            if (age.value == "" || isNaN(ageVal)) {
+                alert("Please enter your age.");
+                age.focus();
+                return false;
+            }
+            if (ageVal < 18 || ageVal > 100) {
+                alert("Age must be between 18 and 100.");
+                age.focus();
+                return false;
+            }
+
+            // (a) Required — Service type dropdown: at least one option selected
+            if (serviceType.selectedIndex < 1) {
+                alert("Please select the service you received.");
+                serviceType.focus();
+                return false;
+            }
+
+            // (a) Required — Satisfaction radio button: at least one must be selected
+            let radioSelected = false;
+            for (let i = 0; i < satisfaction.length; i++) {
+                if (satisfaction[i].checked) {
+                    radioSelected = true;
+                    break;
+                }
+            }
+            if (!radioSelected) {
+                alert("Please select your overall satisfaction level.");
+                return false;
+            }
+
+            // (c) Range constraint — Rating must be between 1 and 10
+            let ratingVal = parseInt(rating.value);
+            if (rating.value == "" || isNaN(ratingVal)) {
+                alert("Please enter a dealership rating.");
+                rating.focus();
+                return false;
+            }
+            if (ratingVal < 1 || ratingVal > 10) {
+                alert("Rating must be a whole number between 1 and 10.");
+                rating.focus();
+                return false;
+            }
+
+            return true; // All checks passed — allow submission
+        }
+
+        /* ── FUNCTION 2: validatePhoneField() ───────────────────────── */
+        // Called onchange on the phone field for real-time independent check
+        function validatePhoneField() {
+            let phone = document.forms["feedbackForm"]["phone"];
+
+            // (b) Regex — Omani phone: 8 digits, starts with 7 or 9
+            if (phone.value.search(/^[79]\d{7}$/) == -1) {
+                alert("Invalid phone number. Must be exactly 8 digits and start with 7 or 9 (e.g. 91234567).");
+                phone.focus();
+                phone.select();
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo.png" alt="Auto Trade" height="40">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
+                <li class="nav-item"><a class="nav-link" href="sell.html">Sell Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
+                <li class="nav-item"><a class="nav-link active-link" href="questionnaire.html">Questionnaire</a></li>
+                <li class="nav-item"><a class="nav-link" href="calculate.html">Calculator</a></li>
+                <li class="nav-item"><a class="nav-link" href="funpage.html">Fun Page</a></li>
+                <li class="nav-item"><a class="nav-link" href="search_cars.php">Search</a></li>
+                <li class="nav-item"><a class="nav-link" href="insert_car.php">Add</a></li>
+                <li class="nav-item"><a class="nav-link" href="update_car.php">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete_car.php">Delete</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+<!-- Main Content -->
+<div class="container mt-5">
+    <div class="mb-4">
+        <a href="index.html" class="btn btn-outline-secondary">&laquo; Return to Home</a>
+    </div>
+
+    <div class="row justify-content-center mb-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Customer Feedback Questionnaire</h3>
+                </div>
+                <div class="card-body p-4">
+                    <p class="text-muted">We value your experience with our dealership. Please fill out the form below.</p>
+
+                    <form name="feedbackForm" id="feedbackForm"
+                          action="questionnaire_process.php" method="post"
+                          onsubmit="return validateFeedbackForm()">
+
+                        <!-- Full Name -->
+                        <div class="mb-3">
+                            <label for="fullName" class="form-label">Full Name:</label>
+                            <input type="text" class="form-control" id="fullName"
+                                   name="fullName" size="40"
+                                   placeholder="e.g. Ahmed Al Harthi" />
+                        </div>
+
+                        <!-- Email -->
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address:</label>
+                            <input type="text" class="form-control" id="email"
+                                   name="email" size="40"
+                                   placeholder="name@example.com" />
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="mb-3">
+                            <label for="phone" class="form-label">Phone Number (Oman):</label>
+                            <input type="text" class="form-control" id="phone"
+                                   name="phone" size="20" maxlength="8"
+                                   placeholder="e.g. 91234567"
+                                   onchange="validatePhoneField()" />
+                            <small class="text-muted">8 digits, starting with 7 or 9</small>
+                        </div>
+
+                        <!-- Age -->
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Your Age:</label>
+                            <input type="text" class="form-control" id="age"
+                                   name="age" size="10"
+                                   placeholder="e.g. 25" />
+                        </div>
+
+                        <!-- Service Received -->
+                        <div class="mb-3">
+                            <label for="serviceType" class="form-label">Service Received:</label>
+                            <select class="form-select" id="serviceType" name="serviceType">
+                                <option value="">-- Please select --</option>
+                                <option value="buying">Buying a Car</option>
+                                <option value="selling">Selling a Car</option>
+                                <option value="browsing">Just Browsing</option>
+                                <option value="maintenance">Maintenance</option>
+                            </select>
+                        </div>
+
+                        <!-- Overall Satisfaction -->
+                        <div class="mb-3">
+                            <label class="form-label">Overall Satisfaction:</label><br />
+                            <label>
+                                <input type="radio" name="satisfaction" value="excellent" />
+                                Excellent
+                            </label>
+                            &nbsp;&nbsp;
+                            <label>
+                                <input type="radio" name="satisfaction" value="good" />
+                                Good
+                            </label>
+                            &nbsp;&nbsp;
+                            <label>
+                                <input type="radio" name="satisfaction" value="average" />
+                                Average
+                            </label>
+                            &nbsp;&nbsp;
+                            <label>
+                                <input type="radio" name="satisfaction" value="poor" />
+                                Needs Improvement
+                            </label>
+                        </div>
+
+                        <!-- Rating -->
+                        <div class="mb-3">
+                            <label for="rating" class="form-label">Dealership Rating (1-10):</label>
+                            <input type="text" class="form-control" id="rating"
+                                   name="rating" size="5"
+                                   placeholder="1 to 10" />
+                        </div>
+
+                        <!-- Comments -->
+                        <div class="mb-4">
+                            <label for="comments" class="form-label">Additional Comments (optional):</label>
+                            <textarea class="form-control" id="comments" name="comments"
+                                      rows="3" maxlength="300"></textarea>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-grid gap-2">
+                            <input type="submit" class="btn btn-primary btn-lg" value="Submit Feedback" />
+                            <input type="reset"  class="btn btn-outline-secondary" value="Clear Form" />
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Footer -->
+<footer class="text-center py-4 bg-dark text-white">
+    <p class="mb-0">&#169; 2026 Auto Trade Dealership. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

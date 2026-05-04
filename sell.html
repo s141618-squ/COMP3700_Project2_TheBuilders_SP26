@@ -1,57 +1,298 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Auto Trade - Sell Your Car</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-</head>
-<body>
-    <a href="index.html" class="btn btn-secondary">
-        &laquo; Return to Home
-    </a>
 
-<div class="container mt-5">
+    <script>
+        
+        /* ── FUNCTION 1: validateSellForm() ─────────────────────────── */
+        function validateSellForm() {
+            let carMake     = document.forms["sellForm"]["carMake"];
+            let carYear     = document.forms["sellForm"]["carYear"];
+            let vin         = document.forms["sellForm"]["vin"];
+            let mileage     = document.forms["sellForm"]["mileage"];
+            let askingPrice = document.forms["sellForm"]["askingPrice"];
+            let color       = document.forms["sellForm"]["color"];
+            let sellerPhone = document.forms["sellForm"]["sellerPhone"];
+            let condition   = document.forms["sellForm"]["condition"];
+            let confirm     = document.forms["sellForm"]["confirm"];
+
+            // (a) Required — Car Make/Model must not be empty
+            if (carMake.value == "") {
+                alert("Please enter the car make and model.");
+                carMake.focus();
+                return false;
+            }
+
+            // (c) Range constraint — Year must be between 1990 and current year
+            let currentYear = new Date().getFullYear();
+            let yearVal     = parseInt(carYear.value);
+            if (carYear.value == "" || isNaN(yearVal)) {
+                alert("Please enter the year of manufacture.");
+                carYear.focus();
+                return false;
+            }
+            if (yearVal < 1990 || yearVal > currentYear) {
+                alert("Year of manufacture must be between 1990 and " + currentYear + ".");
+                carYear.focus();
+                carYear.select();
+                return false;
+            }
+
+            // (b) Regex + (c) Length — VIN: exactly 17 alphanumeric chars (no I, O, Q)
+            if (vin.value.search(/^[A-HJ-NPR-Z0-9]{17}$/i) == -1) {
+                alert("Please enter a valid VIN (Chassis Number). It must be exactly 17 alphanumeric characters. Letters I, O, and Q are not allowed.");
+                vin.focus();
+                vin.select();
+                return false;
+            }
+
+            // (c) Range constraint — Mileage must be 0 or more
+            let mileageVal = parseInt(mileage.value);
+            if (mileage.value == "" || isNaN(mileageVal)) {
+                alert("Please enter the vehicle mileage in km.");
+                mileage.focus();
+                return false;
+            }
+            if (mileageVal < 0 || mileageVal > 999999) {
+                alert("Mileage must be a positive number up to 999,999 km.");
+                mileage.focus();
+                mileage.select();
+                return false;
+            }
+
+            // (c) Range constraint — Asking price must be greater than 0
+            let priceVal = parseFloat(askingPrice.value);
+            if (askingPrice.value == "" || isNaN(priceVal)) {
+                alert("Please enter the asking price in OMR.");
+                askingPrice.focus();
+                return false;
+            }
+            if (priceVal <= 0) {
+                alert("Asking price must be greater than 0 OMR.");
+                askingPrice.focus();
+                askingPrice.select();
+                return false;
+            }
+
+            // (a) Required — Exterior color must not be empty
+            if (color.value == "") {
+                alert("Please enter the exterior color of the vehicle.");
+                color.focus();
+                return false;
+            }
+
+            // (b) Regex — Omani phone: exactly 8 digits starting with 7 or 9
+            if (sellerPhone.value.search(/^[79]\d{7}$/) == -1) {
+                alert("Please enter a valid Omani contact number (8 digits, starting with 7 or 9, e.g. 91234567).");
+                sellerPhone.focus();
+                sellerPhone.select();
+                return false;
+            }
+
+            // (a) Required — Vehicle condition radio group: one must be selected
+            let conditionSelected = false;
+            for (let i = 0; i < condition.length; i++) {
+                if (condition[i].checked) {
+                    conditionSelected = true;
+                    break;
+                }
+            }
+            if (!conditionSelected) {
+                alert("Please select the vehicle condition.");
+                return false;
+            }
+
+            // (d) Logical validation — Confirmation checkbox must be ticked
+            if (!confirm.checked) {
+                alert("You must certify that the information provided is accurate before submitting.");
+                return false;
+            }
+
+            return true; // All checks passed — allow submission
+        }
+
+        /* ── FUNCTION 2: validateVIN() ───────────────────────────────── */
+        // Called onchange on the VIN field for real-time independent validation
+        function validateVIN() {
+            let vin = document.forms["sellForm"]["vin"];
+
+            // (b) Regex + (c) Length — VIN must be exactly 17 valid chars
+            if (vin.value.search(/^[A-HJ-NPR-Z0-9]{17}$/i) == -1) {
+                alert("Invalid VIN. Must be exactly 17 alphanumeric characters (letters I, O, Q are not allowed).");
+                vin.focus();
+                vin.select();
+            }
+        }
+    </script>
+</head>
+
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="index.html">
+            <img src="logo.png" alt="Auto Trade" height="40">
+        </a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="inventory.html">Inventory</a></li>
+                <li class="nav-item"><a class="nav-link active-link" href="sell.html">Sell Car</a></li>
+                <li class="nav-item"><a class="nav-link" href="compare.html">Compare</a></li>
+                <li class="nav-item"><a class="nav-link" href="questionnaire.html">Questionnaire</a></li>
+                <li class="nav-item"><a class="nav-link" href="calculate.html">Calculator</a></li>
+                <li class="nav-item"><a class="nav-link" href="funpage.html">Fun Page</a></li>
+                <li class="nav-item"><a class="nav-link" href="search_cars.php">Search</a></li>
+                <li class="nav-item"><a class="nav-link" href="insert_car.php">Add</a></li>
+                <li class="nav-item"><a class="nav-link" href="update_car.php">Update</a></li>
+                <li class="nav-item"><a class="nav-link" href="delete_car.php">Delete</a></li>
+                <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<div class="container py-5">
+    <div class="mb-4">
+        <a href="index.html" class="btn btn-outline-secondary">&laquo; Return to Home</a>
+    </div>
+
     <div class="row justify-content-center">
-        <div class="col-md-8">
-            <h2 class="mb-4">List Your Vehicle for Sale</h2>
-            <form action="process-sell.html" method="get" class="p-4 border rounded bg-white shadow-sm">
+        <div class="col-lg-8 col-md-10">
+
+            <div class="text-center mb-4">
+                <h2 class="fw-bold">List Your Vehicle for Sale</h2>
+                <p class="text-muted">Fill in the details below to get started</p>
+            </div>
+
+            <form name="sellForm" id="sellForm"
+                  action="process-sell.php" method="post"
+                  onsubmit="return validateSellForm()"
+                  class="p-4 border rounded shadow-sm">
+
+                <!-- Row 1: Car Make/Model + Year -->
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="carMake" class="form-label">Car Make/Model</label>
-                        <input type="text" id="carMake" name="carMake" class="form-control" required="required" />
+                        <label for="carMake" class="form-label">Car Make / Model:</label>
+                        <input type="text" class="form-control" id="carMake"
+                               name="carMake" size="30"
+                               placeholder="e.g. Toyota Camry" />
                     </div>
                     <div class="col-md-6 mb-3">
-                        <label for="vin" class="form-label">Chassis Number (VIN)</label>
-                        <input type="text" id="vin" name="vin" class="form-control" />
+                        <label for="carYear" class="form-label">Year of Manufacture:</label>
+                        <input type="text" class="form-control" id="carYear"
+                               name="carYear" size="10"
+                               placeholder="e.g. 2019" />
                     </div>
                 </div>
-                
+
+                <!-- Row 2: VIN + Mileage -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="vin" class="form-label">Chassis Number (VIN):</label>
+                        <input type="text" class="form-control" id="vin"
+                               name="vin" size="20" maxlength="17"
+                               placeholder="17-character VIN"
+                               onchange="validateVIN()" />
+                        <small class="text-muted">Exactly 17 alphanumeric characters</small>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="mileage" class="form-label">Mileage (km):</label>
+                        <input type="text" class="form-control" id="mileage"
+                               name="mileage" size="15"
+                               placeholder="e.g. 45000" />
+                    </div>
+                </div>
+
+                <!-- Row 3: Asking Price + Color -->
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="askingPrice" class="form-label">Asking Price (OMR):</label>
+                        <input type="text" class="form-control" id="askingPrice"
+                               name="askingPrice" size="15"
+                               placeholder="e.g. 3500" />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="color" class="form-label">Exterior Color:</label>
+                        <input type="text" class="form-control" id="color"
+                               name="color" size="20"
+                               placeholder="e.g. Silver" />
+                    </div>
+                </div>
+
+                <!-- Seller Phone -->
                 <div class="mb-3">
-                    <label class="form-label d-block">Vehicle Condition:</label>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="excellent" name="condition" value="excellent" />
-                        <label class="form-check-label" for="excellent">Excellent</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" id="good" name="condition" value="good" />
-                        <label class="form-check-label" for="good">Good</label>
-                    </div>
+                    <label for="sellerPhone" class="form-label">Your Contact Number:</label>
+                    <input type="text" class="form-control" id="sellerPhone"
+                           name="sellerPhone" size="15" maxlength="8"
+                           placeholder="e.g. 91234567" />
+                    <small class="text-muted">Omani number: 8 digits, starts with 7 or 9</small>
                 </div>
 
+                <!-- Vehicle Condition -->
+                <div class="mb-3">
+                    <label class="form-label">Vehicle Condition:</label><br />
+                    <label>
+                        <input type="radio" name="condition" value="excellent" />
+                        Excellent
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                        <input type="radio" name="condition" value="good" />
+                        Good
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                        <input type="radio" name="condition" value="fair" />
+                        Fair
+                    </label>
+                    &nbsp;&nbsp;
+                    <label>
+                        <input type="radio" name="condition" value="poor" />
+                        Poor
+                    </label>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-3">
+                    <label for="description" class="form-label">Vehicle Description (optional):</label>
+                    <textarea class="form-control" id="description" name="description"
+                              rows="3" maxlength="500"></textarea>
+                </div>
+
+                <!-- Confirmation Checkbox -->
                 <div class="mb-4">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" id="accident" name="accident" value="yes" /> 
-                        <label class="form-check-label" for="accident">I certify that the information provided is accurate.</label>
-                    </div>
+                    <label>
+                        <input type="checkbox" name="confirm" id="confirm" />
+                        I certify that the information provided is accurate and I am the legal owner of this vehicle.
+                    </label>
                 </div>
 
-                <div class="d-grid">
-                    <button type="submit" class="btn btn-success btn-lg">Submit Listing and Return Home</button>
+                <!-- Buttons -->
+                <div class="d-grid gap-2">
+                    <input type="submit" class="btn btn-success btn-lg" value="Submit Listing" />
+                    <input type="reset"  class="btn btn-outline-secondary" value="Clear Form" />
                 </div>
+
             </form>
         </div>
     </div>
 </div>
+
+<!-- Footer -->
+<footer class="text-center py-4 bg-dark text-white">
+    <p class="mb-0">&#169; 2026 Auto Trade Dealership. All rights reserved.</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
